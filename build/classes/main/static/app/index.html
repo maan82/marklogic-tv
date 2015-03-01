@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/html">
+  <head>
+    <link rel="stylesheet" href="../bower_components/bootstrap-css-only/css/bootstrap.css" />
+    <link rel="stylesheet" href="../bower_components/bootstrap-css-only/css/bootstrap-theme.css" />
+    <link rel="stylesheet" href="../bower_components/angular-bootstrap-datetimepicker/src/css/datetimepicker.css"/>
+    <link rel="stylesheet" href="../css/custom.css"/>
+    <link rel="stylesheet" href="/bower_components/isteven-angular-multiselect/isteven-multi-select.css">
+
+  </head>
+  <body ng-app="myApp">
+      <div class="container" ng-controller="AppController">
+      <div class="page-header">
+        <img src="/images/marklogic.png" width="197" height="40" alt="MarkLogic" title="MarkLogic"><span>TV</span>
+      </div>
+      <form class="form-horizontal" role="form" ng-submit="search()">
+        <div  class="col-xs-12">
+          <div class="col-xs-6 pull-left">
+            <div class="input-group control-group">
+              <input type="text" class="form-control" ng-model="searchText" placeholder="Enter the search text" />
+              <span class="input-group-btn">
+                <button class="btn btn-default" type="submit" ng-disabled="!searchText" title="Search">
+                  <span class="glyphicon glyphicon-search"></span>
+                </button>
+              </span>
+            </div>
+          </div>
+          <div class="col-xs-6">
+            <div class="pull-left"
+              isteven-multi-select
+              input-model="genres"
+              output-model="searchgenres"
+              button-label="name"
+              item-label="name"
+              tick-property="ticked"
+              selection-mode="single"
+              on-item-click="search(  )"
+              on-reset="undo( 'searchgenres' )"
+              translation="genreSearchLang"
+              >
+            </div>
+            <div  class="pull-left"
+              isteven-multi-select
+              input-model="sort"
+              output-model="sortoptions"
+              button-label="name"
+              item-label="name"
+              tick-property="ticked"
+              selection-mode="single"
+              on-item-click="search(  )"
+              on-reset="undo('sortoptions')"
+              translation="sortLang"
+              >
+            </div>
+            <div class="pull-left"
+              isteven-multi-select
+              input-model="page"
+              output-model="pageoptions"
+              button-label="name"
+              item-label="name"
+              tick-property="ticked"
+              selection-mode="single"
+              on-item-click="search(  )"
+              on-reset="undo('pageoptions')"
+              translation="pageLang"
+              >
+            </div>
+            <div class="pull-left" style="margin: 5px">
+              <div class="checkbox">
+                <label>
+                  <input type="checkbox" ng-model="available" ng-click="search()"> Available Only
+                </label>
+              </div>
+            </div>
+
+          </div>
+
+        </div>
+        <div class="col-xs-12 alert alert-info" role="alert" ng-hide="items &amp;&amp; items.length > 0">
+          There are no programmes matching your search.
+          <a href="javascript:window.location.href=window.location.href">View all programmes</a>
+        </div>
+
+        <div class="col-xs-12 voffset5" ng-show="showPlayer">
+          <button class="pull-right btn btn-danger" type="button" title="Close"
+                  ng-click="closeVideo()">
+            <span class="glyphicon glyphicon-remove"></span>
+          </button>
+
+          <video id="vid" width="100%" video-loader autoplay controls>
+            {{player_src}}
+            <source id="vidsrc" ng-src="player_src" type="video/mp4">
+          </video>
+
+        </div>
+        <div class="col-xs-12 voffset5">
+          <div  class="pull-left">Total {{total}} programmes found</div>
+          <div class="pull-right">
+            <button class="btn btn-success" ng-show="previous_page" ng-click="previousPage()" type="button">
+              <span class="glyphicon glyphicon-arrow-left"></span>Previous Page
+            </button>
+            <button class="btn btn-success" ng-show="next_page" ng-click="nextPage()" type="button">
+              <span class="glyphicon glyphicon-arrow-right"></span>Next Page
+            </button>
+          </div>
+        </div>
+        <div class="form-group voffset5" ng-repeat="item in items">
+          <div class="col-xs-12">
+            <div class="pull-left col-xs-3">
+              <div class="thumbnail">
+                <img width="100%" ng-src="{{item.programme.image}}" title="{{item.programme.title}}"/>
+                <div class="text-center" ng-show="item.programme.play" ng-click="playVideo(item)">
+                  <span class=" btn btn-danger glyphicon glyphicon-play"></span>
+                </div>
+
+              </div>
+            </div>
+
+            <div class="col-xs-6 pull-left">
+              <h4>{{item.programme.title}}</h4>
+              <p>{{item.programme.synopsis}}</p>
+            </div>
+
+
+            <div class="col-xs-3">
+              <label>Available from : </label>
+              <div>{{item.programme['start-date']}}</div>
+              <label>Available till : </label>
+              <div>{{item.programme['end-date']}}</div>
+              <label>Genres : </label>
+              <div>
+                <span  ng-repeat="genre in item.programme.genres">
+                  <span>{{genre}}</span>
+                </span>
+              </div>
+              <label>Views : </label>
+              <div>{{item.programme.views}}</div>
+
+            </div>
+          </div>
+        </div>
+        <hr />
+      </form>
+    </div>
+    <script type="text/javascript" src="../bower_components/jquery/dist/jquery.js"></script>
+    <script type="text/javascript" src="../bower_components/angular/angular.min.js"></script>
+    <script type="text/javascript" src="../bower_components/angular-resource/angular-resource.min.js"></script>
+    <script type="text/javascript" src="../bower_components/lodash/lodash.min.js"></script>
+    <script type="text/javascript" src="../bower_components/bootstrap/dist/js/bootstrap.js"></script>
+    <script type="text/javascript" src="/bower_components/isteven-angular-multiselect/isteven-multi-select.js"></script>
+    <script type="text/javascript" src="app.js"></script>
+    <script type="text/javascript" src="controllers.js"></script>
+    <script type="text/javascript" src="directives.js"></script>
+
+  </body>
+</html>

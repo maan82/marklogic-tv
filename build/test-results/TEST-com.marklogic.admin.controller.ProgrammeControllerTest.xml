@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="com.marklogic.admin.controller.ProgrammeControllerTest" tests="1" skipped="0" failures="0" errors="0" timestamp="2015-02-28T19:34:34" hostname="mc-s071130.local" time="0.013">
+  <properties/>
+  <testcase name="testAdd" classname="com.marklogic.admin.controller.ProgrammeControllerTest" time="0.013"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

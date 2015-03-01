@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <link rel="stylesheet" href="/bower_components/bootstrap-css-only/css/bootstrap.min.css" />
+  <link rel="stylesheet" href="/bower_components/angular-bootstrap-datetimepicker/src/css/datetimepicker.css"/>
+  <link rel="stylesheet" href="/bower_components/isteven-angular-multiselect/isteven-multi-select.css">
+</head>
+<body ng-app="upload"  ng-controller="UploadController">
+  <div class="page-header">
+    <img src="/images/marklogic.png" width="197" height="40" alt="MarkLogic" title="MarkLogic"><span>TV</span>
+  </div>
+
+  <div class="container">
+    <form class="form-horizontal" role="form" ng-submit="searchItem(searchText)">
+      <div class="input-group control-group">
+        <input type="text" class="form-control" ng-model="searchText" placeholder="Enter the search text" />
+          <span class="input-group-btn">
+            <button class="btn btn-default" type="submit" ng-disabled="!searchText" title="Search">
+              <span class="glyphicon glyphicon-search"></span>
+            </button>
+          </span>
+      </div>
+      <div class="alert alert-info" role="alert" ng-hide="items &amp;&amp; items.length > 0">
+        There are no programmes matching your search.
+        <a href="javascript:window.location.href=window.location.href">View all programmes</a>
+      </div>
+
+      <div class="col-xs-12" ng-show="showPlayer">
+        <button class="pull-right btn btn-danger" type="button" title="Close"
+                ng-click="closeVideo()">
+          <span class="glyphicon glyphicon-remove"></span>
+        </button>
+
+        <video id="vid" width="100%" video-loader autoplay controls>
+          {{player_src}}
+          <source id="vidsrc" ng-src="player_src" type="video/mp4">
+        </video>
+
+      </div>
+
+      <div class="form-group voffset5" ng-repeat="item in items">
+        <div class="col-xs-12">
+          <div class="pull-left col-xs-3">
+            <div class="thumbnail">
+              <img width="100%" ng-src="{{item.programme.image}}" title="{{item.programme.title}}"/>
+              <div class="text-center">
+                <span class="btn btn-danger glyphicon glyphicon-play" ng-click="playVideo(item)"></span>
+                <span class="btn btn-danger glyphicon glyphicon-remove" ng-click="deleteItem(item)"></span>
+              </div>
+            </div>
+          </div>
+
+          <div class="col-xs-6 pull-left">
+            <h4>{{item.programme.title}}</h4>
+            <p>{{item.programme.synopsis}}</p>
+          </div>
+
+
+          <div class="col-xs-3">
+            <label>Available from : </label>
+            <p>{{item.programme['start-date']}}</p>
+            <label>Available till : </label>
+            <p>{{item.programme['end-date']}}</p>
+            <label>Genres : </label>
+            <span  ng-repeat="genre in item.programme.genres">
+              <span>{{genre}}</span>
+            </span>
+          </div>
+        </div>
+      </div>
+      <hr />
+    </form>
+  </div>
+  <div class="container">
+    <h4>Create New Programme</h4>
+    <form class="form-horizontal" role="form" ng-submit="load(files, images)">
+      <input type="hidden" ng-model="id">
+
+      <div class="form-group">
+        <label class="col-sm-2 control-label">Programme Title:</label>
+        <div class="col-sm-10">
+
+          <input class="form-control" type="text" ng-model="title" placeholder="Programme Title">
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label class="col-sm-2 control-label">Synopsis:</label>
+        <div class="col-sm-10">
+          <textarea class="form-control" rows="5" ng-model="synopsis" placeholder="Synopsis" ></textarea>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label class="col-sm-2 control-label">Start Date:</label>
+        <div class="col-sm-10"  class="form-control">
+          <p>Selected Date: {{ start_date | date:'yyyy-MM-dd HH:mm:ss' }}</p>
+          <datetimepicker  data-ng-model="start_date"></datetimepicker>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label class="col-sm-2 control-label">End Date:</label>
+        <div class="col-sm-10">
+          <p>Selected Date: {{ end_date | date:'yyyy-MM-dd HH:mm:ss' }}</p>
+          <datetimepicker data-ng-model="end_date"></datetimepicker>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label class="col-sm-2 control-label">Genres:</label>
+        <div class="col-sm-10">
+          <div
+            isteven-multi-select
+            input-model="genres"
+            output-model="selectedgenres"
+            button-label="icon name"
+            item-label="icon name maker"
+            tick-property="ticked"
+            >
+          </div>
+
+        </div>
+
+      </div>
+
+      <div class="form-group">
+        <label class="col-sm-2 control-label">Media file:</label>
+        <div class="col-sm-10">
+          <div>
+            <span class="btn btn-success" ng-multiple="true"  ng-file-select ng-model="files">
+              <span class="glyphicon glyphicon-plus"></span> {{files[0].name}}
+            </span>
+          </div>
+        </div>
+      </div>
+      <div class="form-group">
+        <label class="col-sm-2 control-label">Image file:</label>
+        <div class="col-sm-10">
+          <div>
+            <span class="btn btn-success"  ng-file-select ng-model="images">
+              <span class="glyphicon glyphicon-plus"></span> {{images[0].name}}
+            </span>
+          </div>
+        </div>
+      </div>
+
+      <hr/>
+      <button class="btn btn-success" type="submit">
+        <span class="glyphicon glyphicon-save"></span>  Save Changes
+      </button>
+
+    </form>
+  </div>
+  <script type="text/javascript" src="/bower_components/angular/angular.min.js"></script>
+  <script type="text/javascript" src="/bower_components/angular-resource/angular-resource.min.js"></script>
+  <script src="/bower_components/ng-file-upload-shim/angular-file-upload-shim.min.js"></script>
+  <script src="/bower_components/ng-file-upload/angular-file-upload.min.js"></script>
+  <script type="text/javascript" src="/bower_components/lodash/lodash.min.js"></script>
+  <script type="text/javascript" src="/bower_components/moment/moment.js"></script>
+  <script type="text/javascript" src="/bower_components/angular-bootstrap-datetimepicker/src/js/datetimepicker.js"></script>
+  <script type="text/javascript" src="/bower_components/isteven-angular-multiselect/isteven-multi-select.js"></script>
+  <script type="text/javascript" src="app.js"></script>
+  <script type="text/javascript" src="controllers.js"></script>
+  <script type="text/javascript" src="services.js"></script>
+  <script type="text/javascript" src="directives.js"></script>
+
+</body>
+</html>
