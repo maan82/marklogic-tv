@@ -3,7 +3,7 @@
 
 ## Requisites
 - MarkLogic 7
-- Java
+- Java 1.7.0_51
 - Gradle
 - Preferred IDE/Text editor
 - Internet connection
@@ -37,19 +37,19 @@ To start java application run below
 - `$ ./gradlew build`: builds the project
 - `$ java -jar build/libs/marklogic-tv-0.1.0.jar`: runs the server
 
-For user application point your browser to [http://localhost:8080/app/index.html](http://localhost:8080/app/index.html)
-For admin application point your browser to [http://localhost:8080/admin/load.html](http://localhost:8080/admin/load.html)
-
 To generate some test data, cd to scripts directory and run test-data.sh as below. Enter the information it asks
 - `$ cd src/main/scripts`
 - `$ ./test-data.sh`
+
+For user application point your browser to [http://localhost:8080/app/index.html](http://localhost:8080/app/index.html)
+For admin application point your browser to [http://localhost:8080/admin/load.html](http://localhost:8080/admin/load.html)
 
 To setup test environment on MarkLogic run setup-test.sh as below. By default it will setup HTTP server on port 9803.
 To change port for test HTTP server, change port element value and name element value in src/main/scripts/ml-tv-test-server.xml
 - `$ cd src/main/scripts`
 - `$ ./setup-test.sh`
 
-To run xquery tests point your browser to [http://localhost:9803/test](http://localhost:9803/test)
+After running above script, to run xquery tests point your browser to [http://localhost:9803/test](http://localhost:9803/test)
 
 ## Teardown packages
 Setup scripts create packages in MarkLogic.To remove these packages run below and enter the information it asks
