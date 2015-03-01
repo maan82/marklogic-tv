@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns="http://www.w3.org/1999/html">
   <head>
     <link rel="stylesheet" href="../bower_components/bootstrap-css-only/css/bootstrap.css" />
     <link rel="stylesheet" href="../bower_components/bootstrap-css-only/css/bootstrap-theme.css" />
@@ -65,6 +65,13 @@
               translation="pageLang"
               >
             </div>
+            <div class="pull-left" style="margin: 5px">
+              <div class="checkbox">
+                <label>
+                  <input type="checkbox" ng-model="available" ng-click="search()"> Available Only
+                </label>
+              </div>
+            </div>
 
           </div>
 
@@ -102,7 +109,7 @@
             <div class="pull-left col-xs-3">
               <div class="thumbnail">
                 <img width="100%" ng-src="{{item.programme.image}}" title="{{item.programme.title}}"/>
-                <div class="text-center" ng-click="playVideo(item)">
+                <div class="text-center" ng-show="item.programme.play" ng-click="playVideo(item)">
                   <span class=" btn btn-danger glyphicon glyphicon-play"></span>
                 </div>
 

@@ -66,6 +66,7 @@ var UploadController = function ($scope, $upload, Item, $http) {
                     console.log('progress: ' + progressPercentage + '% ' + evt.config.file.name);
                 }).success(function (data, status, headers, config) {
                     console.log('file ' + config.file.name + 'uploaded. Response: ' + data);
+                    alert("Programme created.")
                     Item.query(function(response) {
                         $scope.items = getItems(response);
                     });
@@ -109,7 +110,7 @@ var UploadController = function ($scope, $upload, Item, $http) {
     $scope.playVideo = function(item) {
       $scope.showPlayer = true
       if ($scope.showPlayer)
-        $scope.player_src = item.programme.media
+        $scope.player_src = item.programme.media + "?programme_id=" + item.programme.id
       else
         $scope.player_src = ""
     };

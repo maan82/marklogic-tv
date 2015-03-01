@@ -77,6 +77,7 @@
       var $params = {}
 
       $params = setParam($params, "search_text", $scope.searchText)
+      $params = setParam($params, "availability", $scope.available)
       $params = setParamFromArray($params, "genre", $scope.searchgenres)
       $params = setParamFromArray($params, "sort", $scope.sortoptions)
       $params = setParamFromArray($params, "page_size", $scope.pageoptions)

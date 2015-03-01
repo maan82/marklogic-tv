@@ -25,6 +25,7 @@ To change port for HTTP server, change port element value and name element value
 To change port for XDBC server, change port element value and name element value in src/main/scripts/ml-tv-xdbc-server.xml
 Run below command from terminal to setup and enter the information it asks.
 - `$ ./setup.sh`
+- `$ ./deploy-code.sh`
 
 If you have changed HTTP port than change "marklogic.api.port" property in src/main/resources/application.properties
 
